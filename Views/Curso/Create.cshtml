@@ -1,0 +1,14 @@
+﻿@model Curso
+@{
+    ViewData["Title"] = "Creación Curso";
+    
+}
+<h1>@ViewData["Title"]</h1>
+<div asp-validation-summary="All"></div>
+<form method="POST">
+    
+     <partial name="Details" />
+    <button class="btn btn-primary" type="submit">Crear</button>
+   
+</form>
+<p><i>@ViewBag.Fecha</i></p>

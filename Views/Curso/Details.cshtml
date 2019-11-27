@@ -1,0 +1,17 @@
+﻿@model Curso
+  <div class="form-group">
+        <label asp-for="Nombre"></label>
+        <input asp-for="Nombre" class="form-control" type="text"/>
+  </div>
+      <div  class="form-group">
+        <label asp-for="Dirección"></label>
+        <input asp-for="Dirección" class="form-control" type="text"/>
+    </div>
+        <div  class="form-group">
+        <label asp-for="Jornada"></label>
+       @Html.DropDownList(
+           "Jornada",Html.GetEnumSelectList<TiposJornada>(),
+               "Seleccione Una Jornada",
+               new {@class="form-control"}
+       )
+        </div>
