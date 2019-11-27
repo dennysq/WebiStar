@@ -8,6 +8,6 @@ namespace asp_net_core.Models
     {
         public string CursoId{get;set;}
         public Curso Curso{get;set;}
-        public List<Evaluación> Evaluaciones { get; set; } = new List<Evaluación>();
+        public List<Evaluacion> Evaluaciones { get; set; } = new List<Evaluacion>();
     }
 }
