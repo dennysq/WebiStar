@@ -10,23 +10,23 @@ using asp_net_core.Models;
 
 namespace asp_net_core.Controllers
 {
-    public class AlumnoController : Controller
+    public class UserController : Controller
     {
         private readonly EscuelaContext _context;
 
-        public AlumnoController(EscuelaContext context)
+        public UserController(EscuelaContext context)
         {
             _context = context;
         }
 
-        // GET: Alumno
+        // GET: User
         public async Task<IActionResult> Index()
         {
-            var escuelaContext = _context.Alumnos.Include(a => a.Curso);
+            var escuelaContext = _context.User.Include(u => u.Language);
             return View(await escuelaContext.ToListAsync());
         }
 
-        // GET: Alumno/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var user = await _context.User
+                .Include(u => u.Language)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(user);
         }
 
-        // GET: Alumno/Create
+        // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id");
+            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id");
             return View();
         }
 
-        // POST: Alumno/Create
+        // POST: User/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("Username,FirstName,LastName,DateOfBirth,CompanyName,PhoneNumber,LanguageId,PhotoUrl,Id,Modified")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            return View(user);
         }
 
-        // GET: Alumno/Edit/5
+        // GET: User/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            return View(user);
         }
 
-        // POST: Alumno/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Edit(string id, [Bind("Username,FirstName,LastName,DateOfBirth,CompanyName,PhoneNumber,LanguageId,PhotoUrl,Id,Modified")] User user)
         {
-            if (id != alumno.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace asp_net_core.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            return View(user);
         }
 
-        // GET: Alumno/Delete/5
+        // GET: User/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,31 +130,31 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var user = await _context.User
+                .Include(u => u.Language)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(user);
         }
 
-        // POST: Alumno/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            _context.Alumnos.Remove(alumno);
+            var user = await _context.User.FindAsync(id);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(string id)
+        private bool UserExists(string id)
         {
-            return _context.Alumnos.Any(e => e.Id == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }

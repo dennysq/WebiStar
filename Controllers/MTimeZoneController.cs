@@ -10,23 +10,22 @@ using asp_net_core.Models;
 
 namespace asp_net_core.Controllers
 {
-    public class AlumnoController : Controller
+    public class MTimeZoneController : Controller
     {
         private readonly EscuelaContext _context;
 
-        public AlumnoController(EscuelaContext context)
+        public MTimeZoneController(EscuelaContext context)
         {
             _context = context;
         }
 
-        // GET: Alumno
+        // GET: MTimeZone
         public async Task<IActionResult> Index()
         {
-            var escuelaContext = _context.Alumnos.Include(a => a.Curso);
-            return View(await escuelaContext.ToListAsync());
+            return View(await _context.MTimeZone.ToListAsync());
         }
 
-        // GET: Alumno/Details/5
+        // GET: MTimeZone/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var mTimeZone = await _context.MTimeZone
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (mTimeZone == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(mTimeZone);
         }
 
-        // GET: Alumno/Create
+        // GET: MTimeZone/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id");
             return View();
         }
 
-        // POST: Alumno/Create
+        // POST: MTimeZone/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("Name,UtcOffset,Dst,Id,Modified")] MTimeZone mTimeZone)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(mTimeZone);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(mTimeZone);
         }
 
-        // GET: Alumno/Edit/5
+        // GET: MTimeZone/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var mTimeZone = await _context.MTimeZone.FindAsync(id);
+            if (mTimeZone == null)
             {
                 return NotFound();
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(mTimeZone);
         }
 
-        // POST: Alumno/Edit/5
+        // POST: MTimeZone/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Edit(string id, [Bind("Name,UtcOffset,Dst,Id,Modified")] MTimeZone mTimeZone)
         {
-            if (id != alumno.Id)
+            if (id != mTimeZone.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace asp_net_core.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(mTimeZone);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.Id))
+                    if (!MTimeZoneExists(mTimeZone.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(mTimeZone);
         }
 
-        // GET: Alumno/Delete/5
+        // GET: MTimeZone/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var mTimeZone = await _context.MTimeZone
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (mTimeZone == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(mTimeZone);
         }
 
-        // POST: Alumno/Delete/5
+        // POST: MTimeZone/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            _context.Alumnos.Remove(alumno);
+            var mTimeZone = await _context.MTimeZone.FindAsync(id);
+            _context.MTimeZone.Remove(mTimeZone);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(string id)
+        private bool MTimeZoneExists(string id)
         {
-            return _context.Alumnos.Any(e => e.Id == id);
+            return _context.MTimeZone.Any(e => e.Id == id);
         }
     }
 }

@@ -10,23 +10,22 @@ using asp_net_core.Models;
 
 namespace asp_net_core.Controllers
 {
-    public class AlumnoController : Controller
+    public class RegisterController : Controller
     {
         private readonly EscuelaContext _context;
 
-        public AlumnoController(EscuelaContext context)
+        public RegisterController(EscuelaContext context)
         {
             _context = context;
         }
 
-        // GET: Alumno
+        // GET: Register
         public async Task<IActionResult> Index()
         {
-            var escuelaContext = _context.Alumnos.Include(a => a.Curso);
-            return View(await escuelaContext.ToListAsync());
+            return View(await _context.Register.ToListAsync());
         }
 
-        // GET: Alumno/Details/5
+        // GET: Register/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var register = await _context.Register
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (register == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(register);
         }
 
-        // GET: Alumno/Create
+        // GET: Register/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id");
             return View();
         }
 
-        // POST: Alumno/Create
+        // POST: Register/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("Date,ParticipantId,WebinarMeetingId,Id,Modified")] Register register)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(register);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(register);
         }
 
-        // GET: Alumno/Edit/5
+        // GET: Register/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var register = await _context.Register.FindAsync(id);
+            if (register == null)
             {
                 return NotFound();
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(register);
         }
 
-        // POST: Alumno/Edit/5
+        // POST: Register/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Edit(string id, [Bind("Date,ParticipantId,WebinarMeetingId,Id,Modified")] Register register)
         {
-            if (id != alumno.Id)
+            if (id != register.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace asp_net_core.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(register);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.Id))
+                    if (!RegisterExists(register.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(register);
         }
 
-        // GET: Alumno/Delete/5
+        // GET: Register/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var register = await _context.Register
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (register == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(register);
         }
 
-        // POST: Alumno/Delete/5
+        // POST: Register/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            _context.Alumnos.Remove(alumno);
+            var register = await _context.Register.FindAsync(id);
+            _context.Register.Remove(register);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(string id)
+        private bool RegisterExists(string id)
         {
-            return _context.Alumnos.Any(e => e.Id == id);
+            return _context.Register.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-@model IEnumerable<asp_net_core.Models.Alumno>
+@model IEnumerable<asp_net_core.Models.Configuration>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Curso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
+                @Html.DisplayNameFor(model => model.Value)
             </th>
             <th></th>
         </tr>
@@ -25,10 +22,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Curso.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
+                @Html.DisplayFor(modelItem => item.Value)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -10,23 +10,22 @@ using asp_net_core.Models;
 
 namespace asp_net_core.Controllers
 {
-    public class AlumnoController : Controller
+    public class RoleController : Controller
     {
         private readonly EscuelaContext _context;
 
-        public AlumnoController(EscuelaContext context)
+        public RoleController(EscuelaContext context)
         {
             _context = context;
         }
 
-        // GET: Alumno
+        // GET: Role
         public async Task<IActionResult> Index()
         {
-            var escuelaContext = _context.Alumnos.Include(a => a.Curso);
-            return View(await escuelaContext.ToListAsync());
+            return View(await _context.Role.ToListAsync());
         }
 
-        // GET: Alumno/Details/5
+        // GET: Role/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var role = await _context.Role
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(role);
         }
 
-        // GET: Alumno/Create
+        // GET: Role/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id");
             return View();
         }
 
-        // POST: Alumno/Create
+        // POST: Role/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("Id,Modified")] Role role)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(role);
         }
 
-        // GET: Alumno/Edit/5
+        // GET: Role/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var role = await _context.Role.FindAsync(id);
+            if (role == null)
             {
                 return NotFound();
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(role);
         }
 
-        // POST: Alumno/Edit/5
+        // POST: Role/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Modified")] Role role)
         {
-            if (id != alumno.Id)
+            if (id != role.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace asp_net_core.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(role);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.Id))
+                    if (!RoleExists(role.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(role);
         }
 
-        // GET: Alumno/Delete/5
+        // GET: Role/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var role = await _context.Role
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (role == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(role);
         }
 
-        // POST: Alumno/Delete/5
+        // POST: Role/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            _context.Alumnos.Remove(alumno);
+            var role = await _context.Role.FindAsync(id);
+            _context.Role.Remove(role);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(string id)
+        private bool RoleExists(string id)
         {
-            return _context.Alumnos.Any(e => e.Id == id);
+            return _context.Role.Any(e => e.Id == id);
         }
     }
 }

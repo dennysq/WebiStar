@@ -40,7 +40,7 @@ namespace asp_net_core
             modelBuilder.Entity<Curso>().HasData(cursos.ToArray());
             modelBuilder.Entity<Asignatura>().HasData(asignaturas.ToArray());
             modelBuilder.Entity<Alumno>().HasData(alumnos.ToArray());
-            
+
         }
         private List<Alumno> CargarAlumnos(List<Curso> cursos)
         {
@@ -70,7 +70,7 @@ namespace asp_net_core
                             new Asignatura{Nombre="Ciencias Naturales", CursoId=curso.Id,Id=Guid.NewGuid().ToString()},
                             new Asignatura{Nombre="Programacion", CursoId=curso.Id,Id=Guid.NewGuid().ToString()}
                             };
-               
+
                 listaCompleta.AddRange(tempList);
             }
             return listaCompleta;
@@ -129,6 +129,32 @@ new Curso(){
 
             return listaAlumnos.OrderBy((al) => al.Id).Take(limite).ToList();
         }
+
+        public DbSet<asp_net_core.Models.Post> Post { get; set; }
+
+        public DbSet<asp_net_core.Models.Participant> Participant { get; set; }
+
+        public DbSet<asp_net_core.Models.WebinarMeeting> WebinarMeeting { get; set; }
+
+        public DbSet<asp_net_core.Models.Register> Register { get; set; }
+
+        public DbSet<asp_net_core.Models.User> User { get; set; }
+
+        public DbSet<asp_net_core.Models.Configuration> Configuration { get; set; }
+
+        public DbSet<asp_net_core.Models.InteractionLog> InteractionLog { get; set; }
+
+        public DbSet<asp_net_core.Models.Language> Language { get; set; }
+
+        public DbSet<asp_net_core.Models.MediaRecord> MediaRecord { get; set; }
+
+        public DbSet<asp_net_core.Models.Login> Login { get; set; }
+
+        public DbSet<asp_net_core.Models.MTimeZone> MTimeZone { get; set; }
+
+        public DbSet<asp_net_core.Models.Role> Role { get; set; }
+
+        public DbSet<asp_net_core.Models.UserRoleMapping> UserRoleMapping { get; set; }
     }
 
 }

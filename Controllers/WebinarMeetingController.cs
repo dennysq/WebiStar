@@ -10,23 +10,22 @@ using asp_net_core.Models;
 
 namespace asp_net_core.Controllers
 {
-    public class AlumnoController : Controller
+    public class WebinarMeetingController : Controller
     {
         private readonly EscuelaContext _context;
 
-        public AlumnoController(EscuelaContext context)
+        public WebinarMeetingController(EscuelaContext context)
         {
             _context = context;
         }
 
-        // GET: Alumno
+        // GET: WebinarMeeting
         public async Task<IActionResult> Index()
         {
-            var escuelaContext = _context.Alumnos.Include(a => a.Curso);
-            return View(await escuelaContext.ToListAsync());
+            return View(await _context.WebinarMeeting.ToListAsync());
         }
 
-        // GET: Alumno/Details/5
+        // GET: WebinarMeeting/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var webinarMeeting = await _context.WebinarMeeting
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (webinarMeeting == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(webinarMeeting);
         }
 
-        // GET: Alumno/Create
+        // GET: WebinarMeeting/Create
         public IActionResult Create()
         {
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id");
             return View();
         }
 
-        // POST: Alumno/Create
+        // POST: WebinarMeeting/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("StartDate,Duration,Password,HostVideoEnabled,ParticipantVideoEnabled,MaxParticipants,Description,Name,BannerUrl,UserId,Price,Id,Modified")] WebinarMeeting webinarMeeting)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(alumno);
+                _context.Add(webinarMeeting);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(webinarMeeting);
         }
 
-        // GET: Alumno/Edit/5
+        // GET: WebinarMeeting/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno == null)
+            var webinarMeeting = await _context.WebinarMeeting.FindAsync(id);
+            if (webinarMeeting == null)
             {
                 return NotFound();
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(webinarMeeting);
         }
 
-        // POST: Alumno/Edit/5
+        // POST: WebinarMeeting/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CursoId,Id,Nombre")] Alumno alumno)
+        public async Task<IActionResult> Edit(string id, [Bind("StartDate,Duration,Password,HostVideoEnabled,ParticipantVideoEnabled,MaxParticipants,Description,Name,BannerUrl,UserId,Price,Id,Modified")] WebinarMeeting webinarMeeting)
         {
-            if (id != alumno.Id)
+            if (id != webinarMeeting.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace asp_net_core.Controllers
             {
                 try
                 {
-                    _context.Update(alumno);
+                    _context.Update(webinarMeeting);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AlumnoExists(alumno.Id))
+                    if (!WebinarMeetingExists(webinarMeeting.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CursoId"] = new SelectList(_context.Cursos, "Id", "Id", alumno.CursoId);
-            return View(alumno);
+            return View(webinarMeeting);
         }
 
-        // GET: Alumno/Delete/5
+        // GET: WebinarMeeting/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace asp_net_core.Controllers
                 return NotFound();
             }
 
-            var alumno = await _context.Alumnos
-                .Include(a => a.Curso)
+            var webinarMeeting = await _context.WebinarMeeting
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (alumno == null)
+            if (webinarMeeting == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
+            return View(webinarMeeting);
         }
 
-        // POST: Alumno/Delete/5
+        // POST: WebinarMeeting/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            _context.Alumnos.Remove(alumno);
+            var webinarMeeting = await _context.WebinarMeeting.FindAsync(id);
+            _context.WebinarMeeting.Remove(webinarMeeting);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AlumnoExists(string id)
+        private bool WebinarMeetingExists(string id)
         {
-            return _context.Alumnos.Any(e => e.Id == id);
+            return _context.WebinarMeeting.Any(e => e.Id == id);
         }
     }
 }

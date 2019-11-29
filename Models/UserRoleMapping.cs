@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace asp_net_core.Models
 {
-    public class UserRoleMapping
+    public class UserRoleMapping:DbEntity
     {
         [Required]
         public int RoleId{get;set;}

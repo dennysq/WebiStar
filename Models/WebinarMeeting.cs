@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace asp_net_core.Models
 {
@@ -24,6 +25,7 @@ namespace asp_net_core.Models
         public string Name { get; set; }
         [StringLength(256)] public string BannerUrl { get; set; }
         public int UserId { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price{get;set;} 
         public User User { get; set; }
     }
