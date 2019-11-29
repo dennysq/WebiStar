@@ -26,7 +26,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: MTimeZone/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: MTimeZone/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,UtcOffset,Dst,Id,Modified")] MTimeZone mTimeZone)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,UtcOffset,Dst,Id,Modified")] MTimeZone mTimeZone)
         {
             if (id != mTimeZone.Id)
             {
@@ -117,7 +117,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: MTimeZone/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace asp_net_core.Controllers
         // POST: MTimeZone/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var mTimeZone = await _context.MTimeZone.FindAsync(id);
             _context.MTimeZone.Remove(mTimeZone);
@@ -145,7 +145,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MTimeZoneExists(string id)
+        private bool MTimeZoneExists(int id)
         {
             return _context.MTimeZone.Any(e => e.Id == id);
         }

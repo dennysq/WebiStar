@@ -27,7 +27,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: User/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -48,7 +48,7 @@ namespace asp_net_core.Controllers
         // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id");
+            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Id");
             return View();
         }
 
@@ -65,12 +65,12 @@ namespace asp_net_core.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Id", user.LanguageId);
             return View(user);
         }
 
         // GET: User/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace asp_net_core.Controllers
             {
                 return NotFound();
             }
-            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Id", user.LanguageId);
             return View(user);
         }
 
@@ -91,7 +91,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Username,FirstName,LastName,DateOfBirth,CompanyName,PhoneNumber,LanguageId,PhotoUrl,Id,Modified")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Username,FirstName,LastName,DateOfBirth,CompanyName,PhoneNumber,LanguageId,PhotoUrl,Id,Modified")] User user)
         {
             if (id != user.Id)
             {
@@ -118,12 +118,12 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LanguageId"] = new SelectList(_context.Set<Language>(), "Id", "Id", user.LanguageId);
+            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Id", user.LanguageId);
             return View(user);
         }
 
         // GET: User/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -144,7 +144,7 @@ namespace asp_net_core.Controllers
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.User.FindAsync(id);
             _context.User.Remove(user);
@@ -152,7 +152,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(string id)
+        private bool UserExists(int id)
         {
             return _context.User.Any(e => e.Id == id);
         }

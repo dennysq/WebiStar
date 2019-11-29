@@ -26,7 +26,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Participant/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -54,7 +54,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Origin,JoinDate,Id,Modified")] Participant participant)
+        public async Task<IActionResult> Create([Bind("Name,Origin,JoinDate,RegisterId,Id,Modified")] Participant participant)
         {
             if (ModelState.IsValid)
             {
@@ -66,7 +66,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Participant/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Origin,JoinDate,Id,Modified")] Participant participant)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Origin,JoinDate,RegisterId,Id,Modified")] Participant participant)
         {
             if (id != participant.Id)
             {
@@ -117,7 +117,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Participant/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace asp_net_core.Controllers
         // POST: Participant/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var participant = await _context.Participant.FindAsync(id);
             _context.Participant.Remove(participant);
@@ -145,7 +145,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParticipantExists(string id)
+        private bool ParticipantExists(int id)
         {
             return _context.Participant.Any(e => e.Id == id);
         }

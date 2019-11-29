@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace asp_net_core.Models
 {
-    public class Register:DbEntity
+    public class Register : DbEntity
     {
         [Required]
-        public DateTime Date{get;set;}
+        public DateTime Date { get; set; }
         [Required]
-        public int ParticipantId{get;set;}
+        public int ParticipantId { get; set; }
         [Required]
-        public int WebinarMeetingId{get;set;}
-        
+        public int WebinarMeetingId { get; set; }
+
     }
 }

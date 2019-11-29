@@ -20,7 +20,7 @@ namespace asp_net_core.Models
         public string PhoneNumber { get; set; }
         public Language Language { get; set; }
         public String LanguageId { get; set; }
-public string PhotoUrl {get;set;}
-public List<WebinarMeeting> webinarMeetings{get;set;}
+        public string PhotoUrl { get; set; }
+        public List<WebinarMeeting> webinarMeetings { get; set; }=new List<WebinarMeeting>();
     }
 }

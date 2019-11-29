@@ -22,11 +22,12 @@ namespace asp_net_core.Controllers
         // GET: WebinarMeeting
         public async Task<IActionResult> Index()
         {
-            return View(await _context.WebinarMeeting.ToListAsync());
+            var escuelaContext = _context.WebinarMeeting.Include(w => w.User);
+            return View(await escuelaContext.ToListAsync());
         }
 
         // GET: WebinarMeeting/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -34,6 +35,7 @@ namespace asp_net_core.Controllers
             }
 
             var webinarMeeting = await _context.WebinarMeeting
+                .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (webinarMeeting == null)
             {
@@ -46,6 +48,7 @@ namespace asp_net_core.Controllers
         // GET: WebinarMeeting/Create
         public IActionResult Create()
         {
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "FirstName");
             return View();
         }
 
@@ -62,11 +65,12 @@ namespace asp_net_core.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "FirstName", webinarMeeting.UserId);
             return View(webinarMeeting);
         }
 
         // GET: WebinarMeeting/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -78,6 +82,7 @@ namespace asp_net_core.Controllers
             {
                 return NotFound();
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "FirstName", webinarMeeting.UserId);
             return View(webinarMeeting);
         }
 
@@ -86,7 +91,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("StartDate,Duration,Password,HostVideoEnabled,ParticipantVideoEnabled,MaxParticipants,Description,Name,BannerUrl,UserId,Price,Id,Modified")] WebinarMeeting webinarMeeting)
+        public async Task<IActionResult> Edit(int id, [Bind("StartDate,Duration,Password,HostVideoEnabled,ParticipantVideoEnabled,MaxParticipants,Description,Name,BannerUrl,UserId,Price,Id,Modified")] WebinarMeeting webinarMeeting)
         {
             if (id != webinarMeeting.Id)
             {
@@ -113,11 +118,12 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "FirstName", webinarMeeting.UserId);
             return View(webinarMeeting);
         }
 
         // GET: WebinarMeeting/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -125,6 +131,7 @@ namespace asp_net_core.Controllers
             }
 
             var webinarMeeting = await _context.WebinarMeeting
+                .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (webinarMeeting == null)
             {
@@ -137,7 +144,7 @@ namespace asp_net_core.Controllers
         // POST: WebinarMeeting/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var webinarMeeting = await _context.WebinarMeeting.FindAsync(id);
             _context.WebinarMeeting.Remove(webinarMeeting);
@@ -145,7 +152,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool WebinarMeetingExists(string id)
+        private bool WebinarMeetingExists(int id)
         {
             return _context.WebinarMeeting.Any(e => e.Id == id);
         }

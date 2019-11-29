@@ -40,10 +40,10 @@
                 @Html.DisplayNameFor(model => model.BannerUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Modified)
@@ -82,10 +82,10 @@
                 @Html.DisplayFor(modelItem => item.BannerUrl)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.User.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Modified)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +11,7 @@ namespace asp_net_core.Models
         public DateTime StartDate { get; set; }
         [Required]
         public int Duration { get; set; }
-        [Required]
+        
         public MTimeZone MeetingTimeZone { get; set; }
         [StringLength(8)]
         public string Password { get; set; }
@@ -28,5 +29,6 @@ namespace asp_net_core.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price{get;set;} 
         public User User { get; set; }
+        public List<Register> Registers{get;set;}=new List<Register>();
     }
 }

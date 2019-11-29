@@ -26,7 +26,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Register/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Register/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Date,ParticipantId,WebinarMeetingId,Id,Modified")] Register register)
+        public async Task<IActionResult> Edit(int id, [Bind("Date,ParticipantId,WebinarMeetingId,Id,Modified")] Register register)
         {
             if (id != register.Id)
             {
@@ -117,7 +117,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: Register/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace asp_net_core.Controllers
         // POST: Register/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var register = await _context.Register.FindAsync(id);
             _context.Register.Remove(register);
@@ -145,7 +145,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RegisterExists(string id)
+        private bool RegisterExists(int id)
         {
             return _context.Register.Any(e => e.Id == id);
         }

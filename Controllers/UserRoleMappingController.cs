@@ -26,7 +26,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: UserRoleMapping/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: UserRoleMapping/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("RoleId,UserId,Id,Modified")] UserRoleMapping userRoleMapping)
+        public async Task<IActionResult> Edit(int id, [Bind("RoleId,UserId,Id,Modified")] UserRoleMapping userRoleMapping)
         {
             if (id != userRoleMapping.Id)
             {
@@ -117,7 +117,7 @@ namespace asp_net_core.Controllers
         }
 
         // GET: UserRoleMapping/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace asp_net_core.Controllers
         // POST: UserRoleMapping/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var userRoleMapping = await _context.UserRoleMapping.FindAsync(id);
             _context.UserRoleMapping.Remove(userRoleMapping);
@@ -145,7 +145,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserRoleMappingExists(string id)
+        private bool UserRoleMappingExists(int id)
         {
             return _context.UserRoleMapping.Any(e => e.Id == id);
         }

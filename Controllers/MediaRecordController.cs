@@ -22,11 +22,12 @@ namespace asp_net_core.Controllers
         // GET: MediaRecord
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MediaRecord.ToListAsync());
+            var escuelaContext = _context.MediaRecord.Include(m => m.WebinarMeeting);
+            return View(await escuelaContext.ToListAsync());
         }
 
         // GET: MediaRecord/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -34,6 +35,7 @@ namespace asp_net_core.Controllers
             }
 
             var mediaRecord = await _context.MediaRecord
+                .Include(m => m.WebinarMeeting)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (mediaRecord == null)
             {
@@ -46,6 +48,7 @@ namespace asp_net_core.Controllers
         // GET: MediaRecord/Create
         public IActionResult Create()
         {
+            ViewData["WebinarMeetingId"] = new SelectList(_context.WebinarMeeting, "Id", "Description");
             return View();
         }
 
@@ -62,11 +65,12 @@ namespace asp_net_core.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WebinarMeetingId"] = new SelectList(_context.WebinarMeeting, "Id", "Description", mediaRecord.WebinarMeetingId);
             return View(mediaRecord);
         }
 
         // GET: MediaRecord/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -78,6 +82,7 @@ namespace asp_net_core.Controllers
             {
                 return NotFound();
             }
+            ViewData["WebinarMeetingId"] = new SelectList(_context.WebinarMeeting, "Id", "Description", mediaRecord.WebinarMeetingId);
             return View(mediaRecord);
         }
 
@@ -86,7 +91,7 @@ namespace asp_net_core.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name,Data,WebinarMeetingId,ExpireDate,Id,Modified")] MediaRecord mediaRecord)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Data,WebinarMeetingId,ExpireDate,Id,Modified")] MediaRecord mediaRecord)
         {
             if (id != mediaRecord.Id)
             {
@@ -113,11 +118,12 @@ namespace asp_net_core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WebinarMeetingId"] = new SelectList(_context.WebinarMeeting, "Id", "Description", mediaRecord.WebinarMeetingId);
             return View(mediaRecord);
         }
 
         // GET: MediaRecord/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -125,6 +131,7 @@ namespace asp_net_core.Controllers
             }
 
             var mediaRecord = await _context.MediaRecord
+                .Include(m => m.WebinarMeeting)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (mediaRecord == null)
             {
@@ -137,7 +144,7 @@ namespace asp_net_core.Controllers
         // POST: MediaRecord/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var mediaRecord = await _context.MediaRecord.FindAsync(id);
             _context.MediaRecord.Remove(mediaRecord);
@@ -145,7 +152,7 @@ namespace asp_net_core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MediaRecordExists(string id)
+        private bool MediaRecordExists(int id)
         {
             return _context.MediaRecord.Any(e => e.Id == id);
         }

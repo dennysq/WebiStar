@@ -35,11 +35,16 @@ namespace asp_net_core
             var asignaturas = CargarAsignaturas(cursos);
             //por cada curso cargar alumnos
             var alumnos = CargarAlumnos(cursos);
-
+var language=new Language(){
+    Id="es",Name="Español"
+};
+var user=new User(){Id=-1,FirstName="Dennys",LastName="Quiroz",Username="dennysaurio@gmail.com",LanguageId=language.Id};
             modelBuilder.Entity<Escuela>().HasData(escuela);
             modelBuilder.Entity<Curso>().HasData(cursos.ToArray());
             modelBuilder.Entity<Asignatura>().HasData(asignaturas.ToArray());
             modelBuilder.Entity<Alumno>().HasData(alumnos.ToArray());
+            modelBuilder.Entity<Language>().HasData(language);
+            modelBuilder.Entity<User>().HasData(user);
 
         }
         private List<Alumno> CargarAlumnos(List<Curso> cursos)
