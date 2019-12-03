@@ -13,6 +13,7 @@ namespace asp_net_core.Models
         public int Duration { get; set; }
         
         public MTimeZone MeetingTimeZone { get; set; }
+       
         [StringLength(8)]
         public string Password { get; set; }
         public bool HostVideoEnabled { get; set; }

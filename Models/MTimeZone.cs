@@ -5,6 +5,8 @@ namespace asp_net_core.Models
     public class MTimeZone:DbEntity
     {
         [Required,StringLength(64)]
+        public string TimeZoneId{get;set;}
+        [Required,StringLength(64)]
         public string Name{get;set;}
         [Required]
         public string UtcOffset{get;set;}

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using asp_net_core.Models;
 using Microsoft.EntityFrameworkCore;
+using TimeZoneConverter;
 
 namespace asp_net_core
 {
@@ -35,10 +36,12 @@ namespace asp_net_core
             var asignaturas = CargarAsignaturas(cursos);
             //por cada curso cargar alumnos
             var alumnos = CargarAlumnos(cursos);
-var language=new Language(){
-    Id="es",Name="Español"
-};
-var user=new User(){Id=-1,FirstName="Dennys",LastName="Quiroz",Username="dennysaurio@gmail.com",LanguageId=language.Id};
+            var language = new Language()
+            {
+                Id = "es",
+                Name = "Español"
+            };
+            var user = new User() { Id = -1, FirstName = "Dennys", LastName = "Quiroz", Username = "dennysaurio@gmail.com", LanguageId = language.Id };
             modelBuilder.Entity<Escuela>().HasData(escuela);
             modelBuilder.Entity<Curso>().HasData(cursos.ToArray());
             modelBuilder.Entity<Asignatura>().HasData(asignaturas.ToArray());
@@ -115,7 +118,28 @@ new Curso(){
 };
             return escCursos;
         }
+        private List<MTimeZone> generateTimeZones()
+        {
+            var list = TZConvert.KnownWindowsTimeZoneIds;
+            var result = new List<MTimeZone>();
+            foreach (var tz in list)
+            {
+                var timezone = TZConvert.GetTimeZoneInfo(tz);
+                TimeSpan offset = timezone.GetUtcOffset(DateTime.UtcNow);
+                result.Add(new MTimeZone()
+                {
 
+                    Name = timezone.Id,
+
+                    UtcOffset = offset.Hours.ToString(),
+                    Dst = timezone.SupportsDaylightSavingTime
+
+
+                });
+            }
+
+            return result;
+        }
         private List<Alumno> GenerarAlumnosAlAzar(Curso curso, int limite)
         {
             string[] nombre1 = { "Alba", "Felipa", "Eusebio", "Farid", "Donald", "Alvaro", "Nicolás" };
@@ -160,6 +184,8 @@ new Curso(){
         public DbSet<asp_net_core.Models.Role> Role { get; set; }
 
         public DbSet<asp_net_core.Models.UserRoleMapping> UserRoleMapping { get; set; }
+
+        public DbSet<asp_net_core.Models.Invitation> Invitation { get; set; }
     }
 
 }

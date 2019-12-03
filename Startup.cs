@@ -28,7 +28,8 @@ namespace asp_net_core
             // services.AddDbContext<EscuelaContext>(
             //     options => options.UseInMemoryDatabase(databaseName: "testDB")
             // );
-         string connString=ConfigurationExtensions.GetConnectionString(this.Configuration,"DefaultConnectionString");
+            
+            string connString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnectionString");
             services.AddDbContext<EscuelaContext>(
                 options => options.UseSqlServer(connString)
             );
